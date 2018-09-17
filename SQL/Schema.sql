@@ -9,7 +9,7 @@ USE projeto1;
 CREATE TABLE ingredientes(
 	ingredientes_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL,
-    disponivel BIT(1) DEFAUlT 1,
+    quantidade DECIMAL(4,1) DEFAUlT 0,
     custo DECIMAL(5,2) NOT NULL DEFAULT 14.99,
     PRIMARY KEY (ingredientes_id)
 );
