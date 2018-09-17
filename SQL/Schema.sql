@@ -17,6 +17,7 @@ CREATE TABLE ingredientes(
 CREATE TABLE receita(
 	receita_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL,
+    ativa SMALLINT(1) NOT NULL DEFAULT 1,
     PRIMARY KEY (receita_id)
 );
 
@@ -35,6 +36,7 @@ CREATE TABLE cliente(
     genero ENUM('F','M','OTHER') DEFAULT 'OTHER',
     username VARCHAR(45) UNIQUE NOT NULL,
     senha VARCHAR(45) NOT NULL,
+    saldo DECIMAL(5,2) NOT NULL DEFAULT 00.00,
 	PRIMARY KEY (cliente_id)
 );
 
