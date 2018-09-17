@@ -35,6 +35,7 @@ CREATE TABLE cliente(
     genero ENUM('F','M','OTHER') DEFAULT 'OTHER',
     username VARCHAR(45) UNIQUE NOT NULL,
     senha VARCHAR(45) NOT NULL,
+    saldo DECIMAL(5,2) NOT NULL DEFAULT 00.00,
 	PRIMARY KEY (cliente_id)
 );
 
