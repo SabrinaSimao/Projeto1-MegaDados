@@ -43,7 +43,7 @@ BEGIN
 	SELECT senha into tmp FROM cliente WHERE cliente.username = username;
     IF(senha = tmp)
     THEN
-    RETURN 1;
+    RETURN cliente;
     ELSE
     RETURN 0;
     END IF;
@@ -65,7 +65,7 @@ FOR EACH ROW
 BEGIN
     UPDATE cliente 
         SET saldo = saldo - NEW.custo 
-        WHERE id_cliente = NEW.id_cliente;
+        WHERE cliente_id = NEW.cliente_id;
 END//
 
 

@@ -17,6 +17,7 @@ CREATE TABLE ingredientes(
 CREATE TABLE receita(
 	receita_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL,
+    ativa SMALLINT(1) NOT NULL DEFAULT 1,
     PRIMARY KEY (receita_id)
 );
 
