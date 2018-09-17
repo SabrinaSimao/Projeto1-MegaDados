@@ -6,7 +6,8 @@ DROP PROCEDURE IF EXISTS altera_senha;
 DROP FUNCTION IF EXISTS compras_valor;
 DROP FUNCTION IF EXISTS check_senha;
 DROP VIEW IF EXISTS ultimas_compras;
-
+DROP TRIGGER IF EXISTS trig_compras;
+DROP TRIGGER IF EXISTS trig_saldo_insuficiente;
 DELIMITER //
 
 
@@ -56,6 +57,28 @@ CREATE VIEW ultimas_compras AS
     INNER JOIN compras_receita ON compras_receita.compras_id 
     INNER JOIN receita ON receita.receita_id 
     ORDER BY compras.compras_id DESC LIMIT 5;
+
+/* Trigger para atualizar saldo ao realizar compra*/
+CREATE TRIGGER trig_compras 
+BEFORE INSERT ON compras
+FOR EACH ROW
+BEGIN
+    UPDATE cliente 
+        SET saldo = saldo - NEW.custo 
+        WHERE id_cliente = NEW.id_cliente;
+END//
+
+
+/* Trigger para avisar caso saldo seja insuficiente*/
+CREATE TRIGGER trig_saldo_insuficiente 
+BEFORE UPDATE ON cliente
+FOR EACH ROW
+BEGIN
+    IF NEW.saldo < 0.0 THEN
+        SIGNAL SQLSTATE '12345'
+            SET MESSAGE_TEXT = 'Saldo insuficiente.';
+    END IF;
+END//
 
 
 DELIMITER ;
