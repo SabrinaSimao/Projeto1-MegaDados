@@ -2,6 +2,7 @@ import React from "react";
 import './App.css';
 import PropTypes from "prop-types";
 import { Grid, Row, Col, Button, Modal } from "react-bootstrap";
+import {getHomeInfos} from './proxy';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Table from './Table';
 import Dock from 'react-dock';
@@ -70,8 +71,9 @@ class Home extends React.Component {
     this.handleCreateRecipe = this.handleCreateRecipe.bind(this);       
   }
 
-  componentDidMount(){
-
+  componentDidMount() {
+    const infos =  getHomeInfos();
+    const user = this.props.user;
   }
 
   closeModal() {
@@ -83,12 +85,14 @@ class Home extends React.Component {
   }
 
   render() {
+    console.log(this.props.user);
+    const user = this.props.user;
     return <div className="Home">
         <Grid fluid>
           <Row>
             <Col style={{ height: "100vh" }} md={9}>
               <div style={{ textAlign: "center" }}>
-                <h1 className="hello"> Olá, Maurício! </h1>
+                <h1 className="hello"> Olá, {user.name}! </h1>
               </div>
               <Button 
                 style={{ backgroundColor: "white" }}
@@ -112,7 +116,7 @@ class Home extends React.Component {
             </Col>
           </Row>
         </Grid>
-        <div className="saldo">Seu saldo: 200,00 R$</div>
+        <div className="saldo">Seu saldo: {user.saldo} R$</div>
         <Dock position="left" isVisible={this.state.whichDock}>         
           <div
             style={{textAlign:'right', cursor: 'pointer', padding:'15px'}}

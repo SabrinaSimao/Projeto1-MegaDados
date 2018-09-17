@@ -74,8 +74,8 @@ class Login extends Component {
   handleLogin() {
     checkLogin(this.state.username, this.state.password, (res) => {
       if(res) {
-        browserHistory.push("/home");
-        //adicionar user ao redux aqui
+        browserHistory.push("/home");        
+        this.props.setUser(res);
       } else {
         alert('Email ou senha não válidos');
       }  
@@ -143,11 +143,13 @@ class Login extends Component {
                   <FormControl
                     style={{ maxWidth: "20em", margin: "20px 0 20px 0" }}
                     placeholder={"Digite seu usuário"}
+                    onChange={e => this.formControlHandler(e, "username")}
                   />
                   <FormControl
                     style={{ maxWidth: "20em", margin: "20px 0 20px 0" }}
                     type={'password'}
                     placeholder={"Digite sua senha"}
+                    onChange={e => this.formControlHandler(e, "password")}
                   />
                   <div style={{ paddingBottom: "15px" }}>
                     <Button

@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/SabrinaSimao/Projeto1-MegaDados/issues"
   },
-  "homepage": "https://github.com/SabrinaSimao/Projeto1-MegaDados#readme"
+  "homepage": "https://github.com/SabrinaSimao/Projeto1-MegaDados#readme",
+  "dependencies": {
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0"
+  }
 }

@@ -29,14 +29,23 @@ router.post(
   }
 )
 
-router.patch('/geleias', async (req, res, next) => {
-  console.log('chegou no patch');
+router.post('/check-login', async (req, res, next) => {
+  data = req.body;
+  const username = data.username
+  const password =  data.password
   try {
-    res.status(200).json({ result: 'ok, chegou no patch da rest' });
+    var sql = `call check_senha("${username}", "${password}")`;
+    console.log(sql);
+    database.query(sql, function(err, result) {
+      if (err) {
+        res.status(400).json({ err });
+        throw err;
+      } else {
+        res.status(200).json({ result });
+      }
+    });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error });
   }
 });
-
 module.exports = router
