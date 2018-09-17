@@ -4,7 +4,7 @@ USE projeto1;
 DROP PROCEDURE IF EXISTS adiciona_usuario;
 DROP PROCEDURE IF EXISTS altera_senha;
 DROP FUNCTION IF EXISTS compras_valor;
-DROP FUNCTION IF EXISTS check_senha;
+DROP PROCEDURE IF EXISTS check_senha;
 DROP VIEW IF EXISTS ultimas_compras;
 DROP TRIGGER IF EXISTS trig_compras;
 DROP TRIGGER IF EXISTS trig_saldo_insuficiente;
@@ -26,6 +26,12 @@ BEGIN
 END//
 
 
+CREATE PROCEDURE check_senha(IN username VARCHAR(45), IN senha VARCHAR(45))
+BEGIN
+	SELECT * from cliente where cliente.username = username and cliente.senha = senha;
+END//
+
+
 /*Função para checar o valor das compras do cliente*/
 CREATE FUNCTION compras_valor(id INT) RETURNS DECIMAL(5,2)
 BEGIN
@@ -37,6 +43,7 @@ END//
 
 
 /*Função para checar se senha esta na database*/
+/*
 CREATE FUNCTION check_senha(username VARCHAR(45), senha VARCHAR(45)) RETURNS SMALLINT(1)
 BEGIN
 	DECLARE tmp VARCHAR(45);
@@ -48,6 +55,8 @@ BEGIN
     RETURN 0;
     END IF;
 END//
+*/
+
 
 
 /* view para ver as ultimas 5 compras da loja*/
