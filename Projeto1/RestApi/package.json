@@ -1,0 +1,72 @@
+{
+  "name": "big-data-rest",
+  "version": "1.0.0",
+  "description": "REST API Big Data",
+  "main": "index.js",
+  "scripts": {
+    "start": "export NODE_ENV=development && pm2-dev start server.js",
+    "test": "export NODE_ENV=local_test && mocha ./tests --timeout 20000",
+    "test-cli": "export NODE_ENV=test && mocha ./tests --timeout 20000",
+    "doc": "apidoc -i ./api",
+    "start-production": "export NODE_ENV=production && pm2 start server.js -i 1",
+    "restart": "pm2 restart all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hugosoftdev/BigData2018.git"
+  },
+  "keywords": [
+    "Rest",
+    "api",
+    "BigData"
+  ],
+  "author": "Hugo Mendes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hugosoftdev/BigData2018/issues"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "boom": "^7.2.0",
+    "celebrate": "^4.0.3",
+    "check": "^1.0.0",
+    "config": "^1.29.4",
+    "dotenv": "^4.0.0",
+    "errorhandler": "^1.5.0",
+    "eslint-plugin-import": "^2.8.0",
+    "express": "^4.16.2",
+    "joi": "^10.5.2",
+    "joigoose": "^2.0.2",
+    "jsonwebtoken": "^7.4.3",
+    "later": "^1.2.0",
+    "moment": "^2.22.0",
+    "mysql": "^2.16.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "simpl-schema": "^0.3.2",
+    "slack-node": "^0.1.8",
+    "throw.js": "^3.0.1",
+    "underscore": "^1.8.3",
+    "winston": "^2.4.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "eslint": "^3.19.0",
+    "faker": "^4.1.0",
+    "mocha": "^3.5.3",
+    "pm2": "^2.9.3",
+    "prettier": "1.12.1",
+    "prettier-eslint": "8.8.1",
+    "snazzy": "^7.0.0",
+    "standard": "^10.0.3"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "jsxBracketSameLine": true,
+    "printWidth": 100,
+    "useTabs": false,
+    "trailingComma": "es5"
+  }
+}

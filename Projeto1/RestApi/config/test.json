@@ -1,0 +1,11 @@
+{
+  "API_KEY": "lapag",
+  "API_KEY_PAGARME": "ak_test_KsADT9i4ECmG3mR5C7UC1aMkrxzjBN",
+  "LAPAG_MOBILE_API": "lapag_0e2d7757cebf70f79996",
+  "MONGO_URL": "mongodb://marceloprado:2016lapag2017@ds161913.mlab.com:61913/lapag-sandbox",
+  "PORTAL_URL": "http://portal.lapag.com.br/api/professional",
+  "JWT_SECRET": "lapag",
+  "LAPAG_APP_API_PATH": "http://api.lapag.com.br/api",
+  "SLACK_WEBHOOK": "https://hooks.slack.com/services/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",
+  "ROOT_ACCESS_TOKEN": "LKaj+JEH;cDRDLAx3=Zwmnd98@QFL,r2Tinr6KgLDK8^^zD&A3j9b@zxX^3vep9z"
+}
