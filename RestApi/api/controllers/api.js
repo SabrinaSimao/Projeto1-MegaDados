@@ -7,33 +7,45 @@ const router = express.Router()
 const database = require('../models/database')
 
 router.post(
-  '/geleias',
+  '/user',
   async (req, res, next) => {
-    console.log('chegou no insert')
+    data = req.body;
+    console.log(data); 
     try {
-      /*
-        var sql = "INSERT INTO customers (name, address) VALUES ('Company Inc', 'Highway 37')";
-        con.query(sql, function(err, result) {
-          if (err) throw err;
-          console.log('1 record inserted');
-        });
-      */
-      res.status(200).json({ result: 'ok, chegou no post da rest' })
+      var sql = `call adiciona_usuario("${data.name}", "${data.birthday}", "${data.gender}","${data.username}","${data.password}")`;
+      console.log(sql);
+      database.query(sql, function(err, result) {
+        if (err){
+          res.status(400).json({ err })
+          throw err;
+        } else {
+          console.log('1 user inserted');
+          res.status(200).json({ result: 1 });
+        } 
+      });   
     } catch (error) {
-      console.log(error)
       res.status(400).json({ error })
     }
   }
 )
 
-router.patch('/geleias', async (req, res, next) => {
-  console.log('chegou no patch');
+router.post('/check-login', async (req, res, next) => {
+  data = req.body;
+  const username = data.username
+  const password =  data.password
   try {
-    res.status(200).json({ result: 'ok, chegou no patch da rest' });
+    var sql = `call check_senha("${username}", "${password}")`;
+    console.log(sql);
+    database.query(sql, function(err, result) {
+      if (err) {
+        res.status(400).json({ err });
+        throw err;
+      } else {
+        res.status(200).json({ result });
+      }
+    });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error });
   }
 });
-
 module.exports = router
