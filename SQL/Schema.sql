@@ -18,7 +18,9 @@ CREATE TABLE receita(
 	receita_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
     nome VARCHAR(45) NOT NULL,
     ativa SMALLINT(1) NOT NULL DEFAULT 1,
-    PRIMARY KEY (receita_id)
+    PRIMARY KEY (receita_id),
+    cliente_id SMALLINT UNSIGNED NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES cliente (cliente_id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE receita_ingrediente(
