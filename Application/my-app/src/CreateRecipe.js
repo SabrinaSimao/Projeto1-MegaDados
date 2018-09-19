@@ -2,32 +2,48 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./App.css";
 import { FormControl, Button} from "react-bootstrap";
-
-const recipes = [
-  {name:'hugo', value: 1, amount: 100},
-  {name:'hugo', value: 2, amount: 200},
-  {name:'hugo', value: 3, amount: 300},
-  {name:'hugo', value: 4, amount: 400},
-  {name:'hugo', value: 5, amount: 500},
-  {name:'hugo', value: 6, amount: 500},
-  {name:'hugo', value: 7, amount: 700},
-];
+import { getIngredients, createRecipe} from './proxy';
 
 class CreateRecipe extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedRecipes: [],
+      selectedIngredients: [],
+      ingredients: [],
+      recipeName: null,
     };
     this.handleRecipeClick = this.handleRecipeClick.bind(this);
     this.getBiggestPrice = this.getBiggestPrice.bind(this);   
+    this.createRecipe = this.createRecipe.bind(this);
+    this.handleRecipeName = this.handleRecipeName.bind(this);
+    
+  }
+
+  componentDidMount() {
+    getIngredients((res) => {
+      console.log(res);
+      this.setState({ingredients: res});
+    });
+  }
+
+  createRecipe() {
+    const name =  this.state.recipeName;
+    const selectedIngredients= this.state.selectedIngredients;
+    const clientId = this.props.clientId;
+    createRecipe(name,selectedIngredients,clientId, (res) => {
+      if(res){
+        this.props.close('recipe');
+      }else {
+        alert('Erro ao tentar criar receita');
+      }
+    });
   }
 
   getBiggestPrice() {
     let biggestPrice = 0;
-    this.state.selectedRecipes.map((recipeId) => {
-      const recipe = recipes.filter(e => e.value === recipeId)[0];
-      const price =  recipe.amount;
+    this.state.selectedIngredients.map((recipeId) => {
+      const recipe = this.state.ingredients.filter(e => e.ingredientes_id === recipeId)[0];
+      const price =  recipe.custo;
       if(price >  biggestPrice){
         biggestPrice = price;
       }
@@ -38,12 +54,16 @@ class CreateRecipe extends React.Component {
 
   handleRecipeClick(id) {
     const state =  this.state;
-    if(state['selectedRecipes'].includes(id)) {
-      state["selectedRecipes"] = state["selectedRecipes"].filter(e => e != id);
+    if(state['selectedIngredients'].includes(id)) {
+      state["selectedIngredients"] = state["selectedIngredients"].filter(e => e != id);
     } else {
-       state["selectedRecipes"].push(id);
+       state["selectedIngredients"].push(id);
     } 
     this.setState(state);
+  }
+
+  handleRecipeName(e){
+    this.setState({recipeName: e.target.value});
   }
 
   render() {
@@ -53,28 +73,29 @@ class CreateRecipe extends React.Component {
           <span><strong> Qual o nome da receita ? </strong></span>
           <FormControl
             placeholder='nome da sua receita'
+            onChange={this.handleRecipeName}
           />
         </div>
         <div>
           <span> <strong>Escolha os ingredientes</strong> </span>
           <div style={{paddingTop:'20px', display: 'flex-wrap'}}>
             {
-              recipes.map((recipe) => (
+              this.state.ingredients.map((recipe) => (
                   <Button 
-                    onClick={() => this.handleRecipeClick(recipe.value)}
+                    onClick={() => this.handleRecipeClick(recipe.ingredientes_id)}
                     style={{
-                      backgroundColor:  this.state.selectedRecipes.includes(recipe.value) ? 'pink' : 'white',
+                      backgroundColor:  this.state.selectedIngredients.includes(recipe.ingredientes_id) ? 'pink' : 'white',
                       marginLeft: '5px', marginRight:'5px', marginBottom:'5px'
                     }}
                   >
-                    {recipe.name} R$ {recipe.amount/100},00
+                    {recipe.nome} R$ {recipe.custo},00
                   </Button>
                 ))
             }
           </div>
         </div>
         <div style={{paddingTop:'3em', fontSize:'1.5em', paddingBottom:'2.3em'}}>
-          <strong> Preço Atual: {this.getBiggestPrice()/100},00 </strong>
+          <strong> Preço Atual: {this.getBiggestPrice()},00 </strong>
         </div>
         <div style={{
           width:'100%',
@@ -82,7 +103,9 @@ class CreateRecipe extends React.Component {
           flexDirection:'row',
           justifyContent:'center',
         }}>
-        <Button style={{fontSize:'1.3em'}}>
+        <Button 
+          onClick={this.createRecipe}
+          style={{fontSize:'1.3em'}}>
           Salvar
         </Button>
         </div>

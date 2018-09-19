@@ -1,11 +1,18 @@
 import { connect } from "react-redux";
-import { setUser } from "./redux/actions";
-import Home from "./Home";
+import HomePage from "./HomePage";
+import {setUser} from './redux/actions';
 
-const mapStateToProps = ({ user }) => ({
-  user: user
+const mapStateToProps = ({ user }, ownProps) => ({
+  user: user.user,
 });
 
-const HomeContainer = connect(mapStateToProps, null)(Home);
+
+const mapDispatchToProps = dispatch => ({
+  setUser: (payload) => dispatch(setUser(payload))
+});
+
+
+
+const HomeContainer = connect(mapStateToProps, mapDispatchToProps)(HomePage);
 
 export default HomeContainer;

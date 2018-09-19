@@ -1,22 +1,14 @@
 import React from "react";
 import './App.css';
 import PropTypes from "prop-types";
+import { browserHistory } from "react-router";
 import { Grid, Row, Col, Button, Modal } from "react-bootstrap";
-import {getHomeInfos} from './proxy';
+import {checkLogin} from './proxy';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Table from './Table';
 import Dock from 'react-dock';
 import CreateRecipe from './CreateRecipe';
 import BuyCredits from './BuyCredits';
-
-const recipeData = [
-  {
-    name: 'Frutas Vermelhas',
-    value: 21500,
-    buy: <Button style={{backgroundColor:'white'}}> Comprar </Button>,
-    exclude: <Button style={{backgroundColor:'white'}}>  Excluir </Button>
-  }
-]
 
 const recipeColumns = [
   {
@@ -37,18 +29,10 @@ const recipeColumns = [
   }
 ];
 
-const historicData = [
-  {
-    recipe: "Frutas Vermelhas",
-    value: 21500,
-    date: '2018-07-07',
-  }
-];
-
 const historicColumns = [
   {
     Header: "Valor",
-    accessor: "value"
+    accessor: "custo"
   },
   {
     Header: "Receita",
@@ -56,7 +40,7 @@ const historicColumns = [
   },
   {
     Header: "Data",
-    accessor: "date"
+    accessor: "data_pagamento"
   },
 ];
 
@@ -68,31 +52,49 @@ class Home extends React.Component {
       whichDock: null,
     };
     this.closeModal = this.closeModal.bind(this);
-    this.handleCreateRecipe = this.handleCreateRecipe.bind(this);       
+    this.handleCreateRecipe = this.handleCreateRecipe.bind(this);   
+    this.closeDock = this.closeDock.bind(this);
   }
-
-  componentDidMount() {
-    const infos =  getHomeInfos();
-    const user = this.props.user;
-  }
+  
 
   closeModal() {
     this.setState({whichDock: null});
+    this.fillRecipesTable(this.props.user.cliente_id);
   }
 
   handleCreateRecipe(whichDock) {
     this.setState({ whichDock });
   }
 
+  closeDock(arg){
+    this.setState({whichDock: null});
+    if(arg === 'recipe'){
+      this.props.getRecipes(this.props.user.cliente_id);
+    } else if(arg === 'credits') {
+        checkLogin(this.props.user.username, this.props.user.senha, (res) => {
+          if(res) {     
+            console.log('Pay credits', res);          
+            this.props.setUser(res);
+          } else {
+            alert('Erro ao adicionar valor ao usuario logado');
+          }  
+        });
+    }
+  }
+
   render() {
-    console.log(this.props.user);
-    const user = this.props.user;
+    console.log('user',this.props.user);
+    if(!this.props.user) {
+      browserHistory.push("/login"); 
+    }
+    const user = this.props.user || {};
+    const clientId = user.cliente_id;
     return <div className="Home">
         <Grid fluid>
           <Row>
             <Col style={{ height: "100vh" }} md={9}>
               <div style={{ textAlign: "center" }}>
-                <h1 className="hello"> Olá, {user.name}! </h1>
+                <h1 className="hello"> Olá, {user.nome}! </h1>
               </div>
               <Button 
                 style={{ backgroundColor: "white" }}
@@ -106,13 +108,13 @@ class Home extends React.Component {
                 Comprar Saldo
               </Button>
               <h3 style={{ padding: "1em" }}> Receitas Salvas </h3>
-              <Table data={recipeData} columns={recipeColumns} showPagination={true} results={8} />
+              <Table data={this.props.recipes} columns={recipeColumns} showPagination={true} results={8} />
             </Col>
             <Col style={{ backgroundColor: "lightblue", height: "100vh" }} md={3}>
               <div style={{ padding: "20px", color: "white", fontWeight: "500" }}>
                 <h4> Histórico de Compras </h4>
               </div>
-              <Table data={historicData} columns={historicColumns} showPagination={false} results={13} />
+              <Table data={this.props.buyings} columns={historicColumns} showPagination={false} results={13} />
             </Col>
           </Row>
         </Grid>
@@ -127,9 +129,15 @@ class Home extends React.Component {
           </div>
           {
             this.state.whichDock === 'recipe' ?
-              <CreateRecipe/>
+              <CreateRecipe
+                close={this.closeDock}
+                clientId={clientId}
+              />
               :
-              <BuyCredits/>
+              <BuyCredits
+                close={this.closeDock}
+                clientId={clientId}
+              />
           }
         </Dock>
       </div>;

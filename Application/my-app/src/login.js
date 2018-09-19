@@ -73,9 +73,9 @@ class Login extends Component {
 
   handleLogin() {
     checkLogin(this.state.username, this.state.password, (res) => {
-      if(res) {
-        browserHistory.push("/home");        
+      if(res) {       
         this.props.setUser(res);
+        browserHistory.push("/home"); 
       } else {
         alert('Email ou senha não válidos');
       }  

@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./App.css";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
+import { Router, browserHistory } from "react-router";
+import {  Route } from "react-router-dom";
 import { Grid, Row } from "react-bootstrap";
 import LoginContainer from './LoginContainer';
 import HomeContainer from './HomeContainer';
@@ -44,13 +45,11 @@ class App extends React.Component {
           <div className="app-container">
             <div className="app-body">
             <Provider store={store}>
-              <BrowserRouter>
-                <Switch>
+                  <Router history={browserHistory}>
                   <Route exact name="index" path="/" component={LoginContainer} />
                   <Route exact name="home" path="/home" component={HomeContainer} />
                   <Route path="/login" component={LoginContainer} {...props} {...state} />
-                </Switch>
-              </BrowserRouter>
+                </Router>
             </Provider>
             </div>
           </div>
