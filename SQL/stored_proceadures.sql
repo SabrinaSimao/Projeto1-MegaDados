@@ -6,6 +6,7 @@ DROP PROCEDURE IF EXISTS altera_senha;
 DROP FUNCTION IF EXISTS compras_valor;
 DROP PROCEDURE IF EXISTS check_senha;
 DROP VIEW IF EXISTS ultimas_compras;
+DROP VIEW IF EXISTS ingredientes_view;
 DROP TRIGGER IF EXISTS trig_compras;
 DROP TRIGGER IF EXISTS trig_saldo_insuficiente;
 DELIMITER //
@@ -66,7 +67,13 @@ CREATE VIEW ultimas_compras AS
     INNER JOIN compras_receita ON compras_receita.compras_id 
     INNER JOIN receita ON receita.receita_id 
     ORDER BY compras.compras_id DESC LIMIT 5;
-
+    
+/* view para ver as ultimas 5 compras da loja*/
+CREATE VIEW ingredientes_view AS 
+    SELECT * 
+    FROM ingredientes 
+    where quantidade > 0;
+    
 /* Trigger para atualizar saldo ao realizar compra*/
 CREATE TRIGGER trig_compras 
 BEFORE INSERT ON compras
