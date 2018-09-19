@@ -37,7 +37,9 @@ export const getRecipes = async (clientId) => {
       const lastData = { ingredientId: both.ingredientes_id };
       const result = await axios.post(`http://localhost:3002/api/ingredients`, lastData);
       const ingredient = result.data.result;
-      value += ingredient[0].custo;
+      if(ingredient[0].custo > value) {
+        value = ingredient[0].custo;
+      }
     }
     recipe.value = value;
     recipe.name = recipe.nome;

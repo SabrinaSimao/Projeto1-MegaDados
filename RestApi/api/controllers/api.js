@@ -54,9 +54,9 @@ router.post('/ingredients', async (req, res, next) => {
     let sql;
     const data = req.body;
     if (data.ingredientId) {
-      sql = `select * from ingredientes where ingredientes_id=${data.ingredientId}`;
+      sql = `select * from ingredientes where ingredientes_id=${data.ingredientId} `;
     } else {
-      sql = 'select * from ingredientes';
+      sql = 'select * from ingredientes_view';
     }
     console.log(sql);
     database.query(sql, function(err, result) {
