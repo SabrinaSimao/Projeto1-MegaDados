@@ -88,14 +88,14 @@ class CreateRecipe extends React.Component {
                       marginLeft: '5px', marginRight:'5px', marginBottom:'5px'
                     }}
                   >
-                    {recipe.nome} R$ {recipe.custo},00
+                    {recipe.nome} R$ {recipe.custo}
                   </Button>
                 ))
             }
           </div>
         </div>
         <div style={{paddingTop:'3em', fontSize:'1.5em', paddingBottom:'2.3em'}}>
-          <strong> Preço Atual: {this.getBiggestPrice()},00 </strong>
+          <strong> Preço Atual: {this.getBiggestPrice()} </strong>
         </div>
         <div style={{
           width:'100%',

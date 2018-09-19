@@ -6,6 +6,7 @@ const celebrateSchema = require('celebrate')
 const router = express.Router()
 const database = require('../models/database')
 
+
 router.post(
   '/user',
   async (req, res, next) => {
@@ -158,17 +159,19 @@ router.post('/remove-recipe', async (req, res, next) => {
 });
 
 
-
 router.post('/buy-credits', async (req, res, next) => {
   try {
     const data = req.body;
     var sql = `update cliente set saldo =  saldo + ${data.value} where cliente_id = ${data.clientId}`;
     console.log(sql);
+    database.query('start transaction;');
     database.query(sql, function(err, result) {
       if (err) {
         res.status(400).json({ err });
+        database.query('rollback;');
         throw err;
       } else {
+        database.query('commit;');
         res.status(200).json({ result });
       }
     });
@@ -183,6 +186,7 @@ router.post('/buy-recipe', async (req, res, next) => {
     const data = req.body;
     var sql = `INSERT INTO compras (data_pagamento,custo,cliente_id) VALUES ("${data.data_pagamento}", "${data.custo}", "${data.cliente_id}");`;
     console.log(sql);
+    database.query('start transaction;');
     database.query(sql, function(err, result) {
       if (err) {
         res.status(400).json({ err });
@@ -193,16 +197,19 @@ router.post('/buy-recipe', async (req, res, next) => {
         console.log(sql);
         database.query(sql, function(err, response) {
           if (err) {
+            database.query('rollback;');
             res.status(400).json({ err });
             throw err;
           } else {
             const insertedId = res.insertId;
+            database.query('commit;');
             res.status(200).json({ result: 1 });
           }
         });
       }
     });
   } catch (error) {
+    database.query('rollback;');
     res.status(400).json({ error });
   }
 });
