@@ -65,6 +65,8 @@ class HomePage extends React.Component {
   }
 
   async getRecipes(clientId) {
+    console.log('ME olhaaaaa', clientId);
+    
     let res = await getRecipes(clientId);
     res = res.map(recipe => {
       recipe.buy = <Button onClick={() => this.handleBuyRecipe(recipe)} style={{ backgroundColor: "white" }}>

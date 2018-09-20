@@ -48,10 +48,12 @@ class Login extends Component {
     this.setState(state);
   }
 
-  handleDayChange(day) {
+  handleDayChange(day,number) {   
     const state = this.state;
-    state["birthday"] = day.toISOString().split("T")[0];
-    this.setState(state);
+    if(day){
+      state["birthday"] = day.toISOString().split("T")[0];
+      this.setState(state);
+    }
   }
 
   handleRegister() {
@@ -100,6 +102,7 @@ class Login extends Component {
                   <div style={{ paddingBottom: "30px" }}>
                     <span> Data de nascimento: </span>
                     <DayPickerInput
+                      inputProps={{readOnly:true}}
                       onDayChange={day => this.handleDayChange(day)}
                     />
                   </div>
