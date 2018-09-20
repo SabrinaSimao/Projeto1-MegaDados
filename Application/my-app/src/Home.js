@@ -73,7 +73,6 @@ class Home extends React.Component {
     } else if(arg === 'credits') {
         checkLogin(this.props.user.username, this.props.user.senha, (res) => {
           if(res) {     
-            console.log('Pay credits', res);          
             this.props.setUser(res);
           } else {
             alert('Erro ao adicionar valor ao usuario logado');
@@ -83,7 +82,6 @@ class Home extends React.Component {
   }
 
   render() {
-    console.log('user',this.props.user);
     if(!this.props.user) {
       browserHistory.push("/login"); 
     }

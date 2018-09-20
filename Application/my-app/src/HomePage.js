@@ -38,7 +38,6 @@ class HomePage extends React.Component {
   }
 
   handleBuyRecipe(recipe) {
-    console.log(recipe);
     if(recipe.value >  this.props.user.saldo) {
       return alert("Adicione saldo a sua conta para poder comprar essa receita");
     } 
@@ -50,11 +49,9 @@ class HomePage extends React.Component {
     };
 
     buyRecipe(data, (res) => {
-      console.log(res);
       this.getBuys(this.props.user.cliente_id);
         checkLogin(this.props.user.username, this.props.user.senha, (res) => {
-          if(res) {     
-            console.log('Pay credits', res);          
+          if(res) {            
             this.props.setUser(res);
           } else {
             alert('Erro ao adicionar valor ao usuario logado');
@@ -64,9 +61,7 @@ class HomePage extends React.Component {
     
   }
 
-  async getRecipes(clientId) {
-    console.log('ME olhaaaaa', clientId);
-    
+  async getRecipes(clientId) {   
     let res = await getRecipes(clientId);
     res = res.map(recipe => {
       recipe.buy = <Button onClick={() => this.handleBuyRecipe(recipe)} style={{ backgroundColor: "white" }}>
@@ -84,7 +79,6 @@ class HomePage extends React.Component {
 
 
   render() {
-    console.log('Should be printing', this.state.buyings);
     return (
        <div>
          <Home
